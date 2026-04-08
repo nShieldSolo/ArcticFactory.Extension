@@ -42,6 +42,12 @@ Mục tiêu là buộc agent nạp rules trước khi sang phase tiếp theo, th
 
 ## Installation
 
+### Cài từ release ZIP
+
+```bash
+specify extension add arctic-factory --from https://github.com/nShieldSolo/ArcticFactory.Extension/releases/download/v0.0.1/arctic-factory-extension-v0.0.1.zip
+```
+
 ### Cài local extension vào project hiện tại
 
 ```bash
