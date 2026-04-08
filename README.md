@@ -16,7 +16,7 @@ Spec-Kit extension cho workflow Arctic Factory, tập trung vào:
 |---------|-------------|
 | `/speckit.arc.skills-check` | Đọc `skills.json`, cài các skills cần thiết, và báo cáo kết quả bằng tiếng Việt. |
 | `/speckit.arc.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`. Nếu file này đã tồn tại thì hook sẽ nạp và enforce rules cho `plan`, `tasks`, và `implement`; nếu chưa có thì workflow vẫn tiếp tục bình thường. |
-| `/speckit.arc.tester` | Phân tích spec và tạo/cập nhật `.specify/test-plan.md` với coverage theo tư duy QA senior. |
+| `/speckit.arc.tester` | Chạy sau khi implement xong, đóng vai tester trung lập, rồi bắt buộc tạo/cập nhật cả `.specify/test-plan.md` và `.specify/test-plan.xlsx`. |
 
 ## Rules Governance
 
@@ -95,12 +95,17 @@ Ví dụ:
 
 ### `/speckit.arc.tester`
 
-Phân tích spec và tạo/cập nhật `.specify/test-plan.md` theo format bảng OneShop. Prompt này đã được tối ưu để AI nghĩ như tester senior:
+Chạy sau khi implement xong để AI đóng vai trò tester trung lập như người dùng bình thường, viết test cases dựa trên spec và implementation đã có, rồi export bắt buộc ra cả Markdown và Excel:
 
 - happy path, alternate path, negative path
 - boundary, empty/null, permission, state transition
 - integration, regression, security-minded coverage
 - recompute summary từ nội dung thực tế trong file
+- export đồng thời:
+  - `.specify/test-plan.md`
+  - `.specify/test-plan.xlsx`
+
+Nếu môi trường chưa có capability tạo `.xlsx`, command phải báo blocker rõ ràng thay vì giả vờ đã export Excel.
 
 Ví dụ:
 
