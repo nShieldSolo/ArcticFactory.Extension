@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "arc"
   name: "Arctic Factory Extension"
-  version: "0.0.2"
+  version: "0.0.3"
   description: "A spec-kit extension providing workflow utilities for Arctic Factory projects: Vietnamese-first QA planning, project rules enforcement, and workflow helper commands."
   author: "namht"
   repository: "https://github.com/nShieldSolo/ArcticFactory.Extension"
