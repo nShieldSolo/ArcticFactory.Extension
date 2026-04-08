@@ -1,10 +1,10 @@
 ---
-id: "specify.skills-check"
+id: "speckit.arc.skills-check"
 name: "Skills Check"
 description: "Kiểm tra và cài đặt các Skills cần thiết cho project"
 ---
 
-# /specify.skills-check
+# /speckit.arc.skills-check
 
 You are an expert AI developer assistant responsible for automating the environment setup and skill management for the current project.
 

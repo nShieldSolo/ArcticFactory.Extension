@@ -1,7 +1,7 @@
 schema_version: "1.0"
 
 extension:
-  id: "arctic-factory"
+  id: "arc"
   name: "Arctic Factory Extension"
   version: "0.0.1"
   description: "A spec-kit extension providing workflow utilities for Arctic Factory projects: Vietnamese-first QA planning, project rules enforcement, and workflow helper commands."
@@ -14,29 +14,29 @@ requires:
 
 provides:
   commands:
-    - name: "specify.skills-check"
+    - name: "speckit.arc.skills-check"
       file: "commands/skills-check.md"
       description: "Kiểm tra và cài đặt các Skills cần thiết cho project"
-    - name: "specify.rules"
+    - name: "speckit.arc.rules"
       file: "commands/rules.md"
       description: "Tạo hoặc cập nhật project rules để plan, tasks và implement phải tuân thủ"
-    - name: "specify.tester"
+    - name: "speckit.arc.tester"
       file: "commands/tester.md"
       description: "Tạo test plan và test cases dựa trên spec"
 
 hooks:
   before_plan:
-    command: "specify.rules"
+    command: "speckit.arc.rules"
     optional: false
     prompt: "Nạp và áp dụng project rules trước khi tạo implementation plan."
     description: "Đảm bảo bước plan tuân thủ các rules trong `.specify/memory/rules.md`."
   before_tasks:
-    command: "specify.rules"
+    command: "speckit.arc.rules"
     optional: false
     prompt: "Nạp và áp dụng project rules trước khi sinh tasks."
     description: "Đảm bảo bước tasks tuân thủ các rules trong `.specify/memory/rules.md`."
   before_implement:
-    command: "specify.rules"
+    command: "speckit.arc.rules"
     optional: false
     prompt: "Nạp và áp dụng project rules trước khi implement."
     description: "Đảm bảo bước implement tuân thủ các rules trong `.specify/memory/rules.md`."

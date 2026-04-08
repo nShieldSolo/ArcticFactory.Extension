@@ -8,19 +8,19 @@ Spec-Kit extension cho workflow Arctic Factory, tập trung vào:
 - helper commands cho setup workflow
 
 > [!NOTE]
-> Extension này hiện dùng namespace command `specify.*` để khớp với workflow đang có trong repo này.
+> Extension này dùng namespace command `speckit.arc.*` để khớp với schema command name hiện tại của upstream `spec-kit`.
 
 ## Available Commands
 
 | Command | Description |
 |---------|-------------|
-| `/specify.skills-check` | Đọc `skills.json`, cài các skills cần thiết, và báo cáo kết quả bằng tiếng Việt. |
-| `/specify.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`, rồi nạp rules bắt buộc cho `plan`, `tasks`, và `implement`. |
-| `/specify.tester` | Phân tích spec và tạo/cập nhật `.specify/test-plan.md` với coverage theo tư duy QA senior. |
+| `/speckit.arc.skills-check` | Đọc `skills.json`, cài các skills cần thiết, và báo cáo kết quả bằng tiếng Việt. |
+| `/speckit.arc.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`, rồi nạp rules bắt buộc cho `plan`, `tasks`, và `implement`. |
+| `/speckit.arc.tester` | Phân tích spec và tạo/cập nhật `.specify/test-plan.md` với coverage theo tư duy QA senior. |
 
 ## Rules Governance
 
-Command `/specify.rules` dùng template nội bộ tại:
+Command `/speckit.arc.rules` dùng template nội bộ tại:
 
 ```text
 templates/rules-template.md
@@ -45,34 +45,34 @@ Mục tiêu là buộc agent nạp rules trước khi sang phase tiếp theo, th
 ### Cài từ release ZIP
 
 ```bash
-specify extension add arctic-factory --from https://github.com/nShieldSolo/ArcticFactory.Extension/releases/download/v0.0.1/arctic-factory-extension-v0.0.1.zip
+specify extension add arc --from https://github.com/nShieldSolo/ArcticFactory.Extension/releases/download/v0.0.1/arctic-factory-extension-v0.0.1.zip
 ```
 
 ### Cài local extension vào project hiện tại
 
 ```bash
-specify extension add arctic-factory --dev .
+specify extension add arc --dev .
 ```
 
 ### Cài local extension từ thư mục khác
 
 ```bash
-specify extension add arctic-factory --dev /path/to/ArcticFactory.Extension
+specify extension add arc --dev /path/to/ArcticFactory.Extension
 ```
 
 ## Command Details
 
-### `/specify.skills-check`
+### `/speckit.arc.skills-check`
 
 Đọc `skills.json` trong root project hoặc `.specify/`, sau đó chạy lệnh cài skills cần thiết.
 
 Ví dụ:
 
 ```text
-/specify.skills-check
+/speckit.arc.skills-check
 ```
 
-### `/specify.rules`
+### `/speckit.arc.rules`
 
 Tạo hoặc cập nhật `.specify/memory/rules.md` để xác định các nguyên tắc bắt buộc cho:
 
@@ -89,10 +89,10 @@ Command này có 3 mode thực tế:
 Ví dụ:
 
 ```text
-/specify.rules Tất cả tasks phải nhóm theo user story, mọi endpoint mới phải có validation, auth và audit log, implement không được thêm dependency mới nếu chưa có lý do rõ ràng.
+/speckit.arc.rules Tất cả tasks phải nhóm theo user story, mọi endpoint mới phải có validation, auth và audit log, implement không được thêm dependency mới nếu chưa có lý do rõ ràng.
 ```
 
-### `/specify.tester`
+### `/speckit.arc.tester`
 
 Phân tích spec và tạo/cập nhật `.specify/test-plan.md` theo format bảng OneShop. Prompt này đã được tối ưu để AI nghĩ như tester senior:
 
@@ -104,7 +104,7 @@ Phân tích spec và tạo/cập nhật `.specify/test-plan.md` theo format bả
 Ví dụ:
 
 ```text
-/specify.tester specs/001-example/spec.md
+/speckit.arc.tester specs/001-example/spec.md
 ```
 
 ## Project Structure
@@ -137,7 +137,7 @@ Nguồn tham khảo:
 - Spec Kit repository: https://github.com/github/spec-kit
 - Extension API reference: https://raw.githubusercontent.com/github/spec-kit/main/extensions/EXTENSION-API-REFERENCE.md
 
-Tài liệu API này mô tả manifest schema, command file format, hook events, và catalog/install flow. Nếu cần tương thích chặt hoàn toàn với schema upstream mới nhất, có thể cần đổi namespace command sang pattern `speckit.{extension-id}.{command}` trong một đợt refactor riêng.
+Tài liệu API này mô tả manifest schema, command file format, hook events, và catalog/install flow. Repo này hiện dùng pattern `speckit.{extension-id}.{command}` với `extension.id = arc`.
 
 ## Requirements
 

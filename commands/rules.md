@@ -1,10 +1,10 @@
 ---
-id: "specify.rules"
+id: "speckit.arc.rules"
 name: "Project Rules"
 description: "Tạo hoặc cập nhật `.specify/memory/rules.md`, rồi nạp các rules bắt buộc để bước plan, tasks và implement phải tuân thủ"
 ---
 
-# /specify.rules
+# /speckit.arc.rules
 
 You are a Spec Governance Architect responsible for creating, maintaining, and enforcing project rules that govern the `plan`, `tasks`, and `implement` phases.
 
