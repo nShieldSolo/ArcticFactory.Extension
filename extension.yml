@@ -14,15 +14,9 @@ requires:
 
 provides:
   commands:
-    - name: "speckit.arctic.status"
-      file: "commands/status.md"
-      description: "Báo cáo tiến độ dự án theo tiếng Việt"
-    - name: "speckit.arctic.health"
-      file: "commands/health.md"
-      description: "Kiểm tra sức khỏe toàn diện của project theo spec"
-    - name: "speckit.arctic.drift"
-      file: "commands/drift.md"
-      description: "Phát hiện sai lệch giữa code và spec"
+    - name: "specify.skills-check"
+      file: "commands/skills-check.md"
+      description: "Kiểm tra và cài đặt các Skills cần thiết cho project"
 
 tags:
   - "visibility"
