@@ -17,6 +17,9 @@ provides:
     - name: "specify.skills-check"
       file: "commands/skills-check.md"
       description: "Kiểm tra và cài đặt các Skills cần thiết cho project"
+    - name: "specify.tester"
+      file: "commands/tester.md"
+      description: "Tạo test plan và test cases dựa trên spec"
 
 tags:
   - "visibility"
