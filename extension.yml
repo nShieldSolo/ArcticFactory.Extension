@@ -1,0 +1,31 @@
+schema_version: "1.0"
+
+extension:
+  id: "arctic-factory"
+  name: "Arctic Factory Extension"
+  version: "0.1.0"
+  description: "A spec-kit extension providing workflow utilities for Arctic Factory projects: Vietnamese-friendly progress reporting, task health checks, and spec drift detection."
+  author: "namht"
+  repository: "https://github.com/nShieldSolo/ArcticFactory.Extension"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.1.0"
+
+provides:
+  commands:
+    - name: "speckit.arctic.status"
+      file: "commands/status.md"
+      description: "Báo cáo tiến độ dự án theo tiếng Việt"
+    - name: "speckit.arctic.health"
+      file: "commands/health.md"
+      description: "Kiểm tra sức khỏe toàn diện của project theo spec"
+    - name: "speckit.arctic.drift"
+      file: "commands/drift.md"
+      description: "Phát hiện sai lệch giữa code và spec"
+
+tags:
+  - "visibility"
+  - "process"
+  - "docs"
+  - "vietnamese"

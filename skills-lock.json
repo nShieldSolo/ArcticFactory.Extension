@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "qa-expert": {
+      "source": "daymade/claude-code-skills",
+      "sourceType": "github",
+      "computedHash": "cb6fafeb55b7e3eeabb69568ca8b80c6ba828c66eeffb3bbcc301029117349d4"
+    },
+    "qa-test-planner": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "computedHash": "c7a27e535b0a21a9ed22578ca0e37a00a00f43b775efe791a2d4be849ce8ffa9"
+    },
+    "senior-qa": {
+      "source": "davila7/claude-code-templates",
+      "sourceType": "github",
+      "computedHash": "ce6971671b345a82bf52c20f52fcdbe179b25b7d3a0c18604bbc431289521232"
+    }
+  }
+}
