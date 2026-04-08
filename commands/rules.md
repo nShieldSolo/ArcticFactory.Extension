@@ -15,6 +15,7 @@ You are a Spec Governance Architect responsible for creating, maintaining, and e
 - Treat `.specify/memory/rules.md` as a project governance artifact, complementary to `.specify/memory/constitution.md`.
 - If `.specify/memory/rules.md` already exists and the user did not ask to rewrite it, preserve existing intent and merge changes carefully.
 - If this command is triggered automatically as a pre-hook and there is already a valid rules file, do not rewrite it unnecessarily. Load it, summarize it, and enforce it.
+- If this command is triggered automatically as a pre-hook and `.specify/memory/rules.md` does not exist, do not create one automatically. Return a short no-op summary and allow the next phase to continue without extra rules enforcement.
 - The final output of this command MUST make the active rules explicit so the immediately following phase can follow them.
 
 ## Primary Objective
@@ -28,6 +29,10 @@ Create or update `.specify/memory/rules.md` so that:
 When this command runs as a pre-hook, its role is both:
 - governance artifact management
 - rule injection into the current agent context
+
+However, pre-hook execution is conditional:
+- If rules file exists: enforce it
+- If rules file does not exist: do not auto-generate governance and do not block the workflow
 
 ## Input Resolution
 
@@ -44,7 +49,7 @@ Use the following sources, in order of priority:
    - `specs/*/plan.md` or `.specify/specs/*/plan.md`
    - `specs/*/tasks.md` or `.specify/specs/*/tasks.md`
 
-If no feature artifact exists yet, still create a strong general-purpose project rules file.
+If no feature artifact exists yet, still create a strong general-purpose project rules file only when the user explicitly asks to create rules.
 
 ## Required Workflow
 
@@ -54,9 +59,10 @@ If no feature artifact exists yet, still create a strong general-purpose project
    - Check whether `.specify/memory/rules.md` exists and read it if available
    - Inspect current `specs/` or `.specify/specs/` folders if present to understand how detailed the rules should be
 2. Decide mode
-   - **Create mode**: No existing rules file
+   - **Create mode**: No existing rules file and the user explicitly asks to create/init/write rules
    - **Merge mode**: Rules file exists and `$ARGUMENTS` asks to add, refine, or tighten rules
    - **Enforcement mode**: Rules file exists and there is no explicit rewrite request; load and enforce it
+   - **No-op mode**: Rules file does not exist and the command is being invoked only because of an automatic pre-hook
 3. Ensure `.specify/memory/` exists
 4. Create or update `.specify/memory/rules.md`
    - Use the structure and intent from `templates/rules-template.md`
@@ -64,6 +70,25 @@ If no feature artifact exists yet, still create a strong general-purpose project
 5. Output active enforcement summary
    - Summarize the key rules currently in force
    - Explicitly instruct the next phase to obey them
+
+## Mode Selection Rules
+
+Choose mode using this decision order:
+
+1. If `.specify/memory/rules.md` exists and there is no explicit rewrite request:
+   - use `Enforcement mode`
+2. If `.specify/memory/rules.md` exists and `$ARGUMENTS` asks to add/update/change rules:
+   - use `Merge mode`
+3. If `.specify/memory/rules.md` does not exist and the user explicitly asks to create/init/write rules:
+   - use `Create mode`
+4. If `.specify/memory/rules.md` does not exist and the command is being invoked only because of a workflow pre-hook:
+   - use `No-op mode`
+
+In `No-op mode`:
+- do not create `.specify/memory/rules.md`
+- do not invent default rules
+- do not block `plan`, `tasks`, or `implement`
+- respond briefly that no rules file exists, so no extra rules are being enforced
 
 ## Rules File Structure
 
@@ -198,6 +223,28 @@ When `.specify/memory/rules.md` already exists:
 4. Keep the document readable and structured
 5. If `$ARGUMENTS` provides new constraints, merge them into the relevant section instead of dumping them in one place
 
+## No-op Behavior for Automatic Hooks
+
+This section is critical.
+
+When the command is triggered automatically before `plan`, `tasks`, or `implement`:
+
+- If `.specify/memory/rules.md` exists:
+  - load it
+  - summarize active rules
+  - enforce them for the next phase
+- If `.specify/memory/rules.md` does not exist:
+  - do not create the file
+  - do not synthesize placeholder governance
+  - do not warn aggressively
+  - simply state that no project rules file exists, so the next phase should continue normally
+
+Use a short response pattern like:
+
+```markdown
+Không tìm thấy `.specify/memory/rules.md`. Không áp dụng rules bổ sung. Bước tiếp theo có thể tiếp tục bình thường.
+```
+
 ## Template Usage
 
 Use `templates/rules-template.md` as the baseline structure and wording style.
@@ -220,6 +267,16 @@ After creating, updating, or loading the rules file, your response MUST include:
    - Ví dụ: user input, constitution, existing rules, current feature artifacts
 3. Tóm tắt các rules bắt buộc đang có hiệu lực
 4. An explicit enforcement directive for the next phase
+
+If running in `No-op mode`, replace the enforcement summary with:
+
+1. Trạng thái file
+   - Chưa có `.specify/memory/rules.md`
+2. Hành vi
+   - Không tạo rules tự động
+   - Không áp dụng rules bổ sung
+3. Chỉ thị cho bước tiếp theo
+   - Tiếp tục workflow bình thường
 
 Use a section like this in your response:
 

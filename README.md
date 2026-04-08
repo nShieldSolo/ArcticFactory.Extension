@@ -15,7 +15,7 @@ Spec-Kit extension cho workflow Arctic Factory, tập trung vào:
 | Command | Description |
 |---------|-------------|
 | `/speckit.arc.skills-check` | Đọc `skills.json`, cài các skills cần thiết, và báo cáo kết quả bằng tiếng Việt. |
-| `/speckit.arc.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`, rồi nạp rules bắt buộc cho `plan`, `tasks`, và `implement`. |
+| `/speckit.arc.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`. Nếu file này đã tồn tại thì hook sẽ nạp và enforce rules cho `plan`, `tasks`, và `implement`; nếu chưa có thì workflow vẫn tiếp tục bình thường. |
 | `/speckit.arc.tester` | Phân tích spec và tạo/cập nhật `.specify/test-plan.md` với coverage theo tư duy QA senior. |
 
 ## Rules Governance
@@ -38,7 +38,7 @@ Manifest cũng khai báo các pre-hook:
 - `before_tasks`
 - `before_implement`
 
-Mục tiêu là buộc agent nạp rules trước khi sang phase tiếp theo, thay vì chỉ tạo file rồi bỏ đó.
+Mục tiêu là nạp rules trước khi sang phase tiếp theo nếu project đã có `.specify/memory/rules.md`. Nếu chưa có file này, workflow vẫn tiếp tục bình thường và không bị ép tạo rules.
 
 ## Installation
 
@@ -80,11 +80,12 @@ Tạo hoặc cập nhật `.specify/memory/rules.md` để xác định các ngu
 - bước tasks
 - bước implement
 
-Command này có 3 mode thực tế:
+Command này có 4 mode thực tế:
 
-- `create mode`: chưa có rules file
+- `create mode`: chưa có rules file và người dùng chủ động yêu cầu tạo rules
 - `merge mode`: có rules file và người dùng muốn bổ sung/chỉnh rules
 - `enforcement mode`: chạy như pre-hook, nạp rules hiện có và ép phase kế tiếp tuân thủ
+- `no-op mode`: hook chạy nhưng project chưa có `.specify/memory/rules.md`, nên không enforce gì thêm
 
 Ví dụ:
 
