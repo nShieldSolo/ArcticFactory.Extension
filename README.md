@@ -1,24 +1,31 @@
-# ArcticFactory.Extension
+<div align="center">
+  <h1>ArcticFactory Extension</h1>
+  <p><em>Spec-Kit extensions for professional QA and project configuration</em></p>
+</div>
 
-Một [spec-kit](https://github.com/github/spec-kit) extension cung cấp các lệnh hỗ trợ workflow cho dự án Arctic Factory, với báo cáo bằng **tiếng Việt**.
+A [spec-kit](https://github.com/github/spec-kit) extension providing advanced workflow utilities for Arctic Factory projects. It includes automated skill configuration and a powerful, senior-level QA test case generator tailored for enterprise standards.
 
-## 🧩 Lệnh Có Sẵn
+> [!NOTE]
+> All reports and generated structures from this extension are fully localized in **Vietnamese**.
 
-| Lệnh | Mô tả |
-|------|--------|
-| `/speckit.arctic.status` | Báo cáo tiến độ dự án bằng tiếng Việt |
-| `/speckit.arctic.health` | Kiểm tra sức khỏe toàn diện project |
-| `/speckit.arctic.drift` | Phát hiện sai lệch giữa code và spec |
+## 🧩 Available Commands
 
-## ⚡ Cài đặt
+| Command | Description |
+|---------|-------------|
+| `/specify.tester` | Phân tích spec và tự động tạo/cập nhật test plan theo chuẩn OneShop (`.specify/test-plan.md`), với tư duy QA senior. |
+| `/specify.skills-check` | Tự động đọc cấu hình động (`skills.json`) để kiểm tra và cài đặt các Skills cần thiết cho dự án. |
 
-### Cách 1: Dùng Specify CLI
+## ⚡ Installation
+
+### Option 1: Using Specify CLI
 
 ```bash
 specify extend nShieldSolo/ArcticFactory.Extension
 ```
 
-### Cách 2: Thêm vào `.specify/extensions.yml`
+### Option 2: Add to `.specify/extensions.yml`
+
+Add the following to your project's `.specify/extensions.yml`:
 
 ```yaml
 extensions:
@@ -26,56 +33,37 @@ extensions:
     version: "0.1.0"
 ```
 
-## 📖 Mô Tả Từng Lệnh
+## 📖 Command Details
 
-### `/speckit.arctic.status`
+### `/specify.tester`
 
-Đọc tất cả spec artifacts trong `.specify/` và tạo báo cáo tiến độ bằng tiếng Việt. Cho biết phase hiện tại, số task hoàn thành, và bước tiếp theo.
+Acts as a Senior QA Strategist. This command reads a feature specification and automates the creation of comprehensive test cases directly into a Markdown file mimicking the structure of `OneShop_WEB.xlsx`.
 
-```
-/speckit.arctic.status
-```
+**Core Capabilities:**
+- Coverage spans happy paths, negative paths, boundary values, state transitions, role permissions, and integration scenarios.
+- Automatically initializes and manages a global `.specify/test-plan.md` file shared across all project features.
+- Dynamically recalculates metrics (Critical, Major, Minor counts) and manages feature-specific "sheets" (Markdown tables).
+- Follows the AAA (Arrange, Act, Assert) model.
 
-### `/speckit.arctic.health`
-
-Kiểm tra toàn diện project và chấm điểm sức khỏe (0-100):
-- Kiểm tra cấu trúc artifacts
-- Kiểm tra tính đầy đủ từng file
-- Kiểm tra tính nhất quán giữa các artifacts
-
-```
-/speckit.arctic.health
+**Usage:**
+```text
+/specify.tester [Tùy chọn: Tên Feature hoặc Đường dẫn tới file Spec]
 ```
 
-### `/speckit.arctic.drift`
+### `/specify.skills-check`
 
-Phân tích sai lệch giữa code đã implement và spec hiện tại. Phát hiện:
-- Yêu cầu chưa được implement
-- Code được viết ngoài spec
-- Logic có thể sai
+Automates environment setup by checking and downloading necessary Spec-Kit external skills. 
 
-```
-/speckit.arctic.drift
-```
+**Core Capabilities:**
+- Looks for `skills.json` at the project's root directory (or `.specify/`) to fetch dynamic configurations.
+- Generates a default `skills.json` structure if one does not exist.
+- Executes `npx skills add` to setup environment dependencies accurately.
 
-## 📋 Yêu Cầu
-
-- [spec-kit](https://github.com/github/spec-kit) >= 0.1.0
-
-## 📁 Cấu Trúc Project
-
-```
-ArcticFactory.Extension/
-├── extension.yml           # Extension manifest
-├── commands/
-│   ├── status.md           # Lệnh báo cáo tiến độ
-│   ├── health.md           # Lệnh kiểm tra sức khỏe
-│   └── drift.md            # Lệnh phát hiện drift
-├── README.md
-├── CHANGELOG.md
-└── LICENSE
+**Usage:**
+```text
+/specify.skills-check
 ```
 
-## 📄 License
+## 📋 Requirements
 
-[MIT](LICENSE)
+- [spec-kit](https://github.com/github/spec-kit) `>= 0.1.0`
