@@ -4,7 +4,7 @@ extension:
   id: "arctic-factory"
   name: "Arctic Factory Extension"
   version: "0.1.0"
-  description: "A spec-kit extension providing workflow utilities for Arctic Factory projects: Vietnamese-friendly progress reporting, task health checks, and spec drift detection."
+  description: "A spec-kit extension providing workflow utilities for Arctic Factory projects: Vietnamese-first QA planning, project rules enforcement, and workflow helper commands."
   author: "namht"
   repository: "https://github.com/nShieldSolo/ArcticFactory.Extension"
   license: "MIT"
@@ -17,12 +17,34 @@ provides:
     - name: "specify.skills-check"
       file: "commands/skills-check.md"
       description: "Kiểm tra và cài đặt các Skills cần thiết cho project"
+    - name: "specify.rules"
+      file: "commands/rules.md"
+      description: "Tạo hoặc cập nhật project rules để plan, tasks và implement phải tuân thủ"
     - name: "specify.tester"
       file: "commands/tester.md"
       description: "Tạo test plan và test cases dựa trên spec"
+
+hooks:
+  before_plan:
+    command: "specify.rules"
+    optional: false
+    prompt: "Nạp và áp dụng project rules trước khi tạo implementation plan."
+    description: "Đảm bảo bước plan tuân thủ các rules trong `.specify/memory/rules.md`."
+  before_tasks:
+    command: "specify.rules"
+    optional: false
+    prompt: "Nạp và áp dụng project rules trước khi sinh tasks."
+    description: "Đảm bảo bước tasks tuân thủ các rules trong `.specify/memory/rules.md`."
+  before_implement:
+    command: "specify.rules"
+    optional: false
+    prompt: "Nạp và áp dụng project rules trước khi implement."
+    description: "Đảm bảo bước implement tuân thủ các rules trong `.specify/memory/rules.md`."
 
 tags:
   - "visibility"
   - "process"
   - "docs"
   - "vietnamese"
+  - "qa"
+  - "governance"

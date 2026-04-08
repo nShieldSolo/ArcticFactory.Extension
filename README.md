@@ -1,69 +1,138 @@
-<div align="center">
-  <h1>ArcticFactory Extension</h1>
-  <p><em>Spec-Kit extensions for professional QA and project configuration</em></p>
-</div>
+# ArcticFactory Extension
 
-A [spec-kit](https://github.com/github/spec-kit) extension providing advanced workflow utilities for Arctic Factory projects. It includes automated skill configuration and a powerful, senior-level QA test case generator tailored for enterprise standards.
+Spec-Kit extension cho workflow Arctic Factory, tập trung vào:
+
+- artifact và báo cáo bằng tiếng Việt
+- QA planning chi tiết
+- project rules governance cho `plan`, `tasks`, `implement`
+- helper commands cho setup workflow
 
 > [!NOTE]
-> All reports and generated structures from this extension are fully localized in **Vietnamese**.
+> Extension này hiện dùng namespace command `specify.*` để khớp với workflow đang có trong repo này.
 
-## 🧩 Available Commands
+## Available Commands
 
 | Command | Description |
 |---------|-------------|
-| `/specify.tester` | Phân tích spec và tự động tạo/cập nhật test plan theo chuẩn OneShop (`.specify/test-plan.md`), với tư duy QA senior. |
-| `/specify.skills-check` | Tự động đọc cấu hình động (`skills.json`) để kiểm tra và cài đặt các Skills cần thiết cho dự án. |
+| `/specify.skills-check` | Đọc `skills.json`, cài các skills cần thiết, và báo cáo kết quả bằng tiếng Việt. |
+| `/specify.rules` | Tạo hoặc cập nhật `.specify/memory/rules.md`, rồi nạp rules bắt buộc cho `plan`, `tasks`, và `implement`. |
+| `/specify.tester` | Phân tích spec và tạo/cập nhật `.specify/test-plan.md` với coverage theo tư duy QA senior. |
 
-## ⚡ Installation
+## Rules Governance
 
-### Option 1: Using Specify CLI
+Command `/specify.rules` dùng template nội bộ tại:
+
+```text
+templates/rules-template.md
+```
+
+để tạo artifact đích trong project:
+
+```text
+.specify/memory/rules.md
+```
+
+Manifest cũng khai báo các pre-hook:
+
+- `before_plan`
+- `before_tasks`
+- `before_implement`
+
+Mục tiêu là buộc agent nạp rules trước khi sang phase tiếp theo, thay vì chỉ tạo file rồi bỏ đó.
+
+## Installation
+
+### Cài local extension vào project hiện tại
 
 ```bash
-specify extend nShieldSolo/ArcticFactory.Extension
+specify extension add arctic-factory --dev .
 ```
 
-### Option 2: Add to `.specify/extensions.yml`
+### Cài local extension từ thư mục khác
 
-Add the following to your project's `.specify/extensions.yml`:
-
-```yaml
-extensions:
-  - source: "nShieldSolo/ArcticFactory.Extension"
-    version: "0.1.0"
+```bash
+specify extension add arctic-factory --dev /path/to/ArcticFactory.Extension
 ```
 
-## 📖 Command Details
-
-### `/specify.tester`
-
-Acts as a Senior QA Strategist. This command reads a feature specification and automates the creation of comprehensive test cases directly into a Markdown file mimicking the structure of `OneShop_WEB.xlsx`.
-
-**Core Capabilities:**
-- Coverage spans happy paths, negative paths, boundary values, state transitions, role permissions, and integration scenarios.
-- Automatically initializes and manages a global `.specify/test-plan.md` file shared across all project features.
-- Dynamically recalculates metrics (Critical, Major, Minor counts) and manages feature-specific "sheets" (Markdown tables).
-- Follows the AAA (Arrange, Act, Assert) model.
-
-**Usage:**
-```text
-/specify.tester [Tùy chọn: Tên Feature hoặc Đường dẫn tới file Spec]
-```
+## Command Details
 
 ### `/specify.skills-check`
 
-Automates environment setup by checking and downloading necessary Spec-Kit external skills. 
+Đọc `skills.json` trong root project hoặc `.specify/`, sau đó chạy lệnh cài skills cần thiết.
 
-**Core Capabilities:**
-- Looks for `skills.json` at the project's root directory (or `.specify/`) to fetch dynamic configurations.
-- Generates a default `skills.json` structure if one does not exist.
-- Executes `npx skills add` to setup environment dependencies accurately.
+Ví dụ:
 
-**Usage:**
 ```text
 /specify.skills-check
 ```
 
-## 📋 Requirements
+### `/specify.rules`
+
+Tạo hoặc cập nhật `.specify/memory/rules.md` để xác định các nguyên tắc bắt buộc cho:
+
+- bước plan
+- bước tasks
+- bước implement
+
+Command này có 3 mode thực tế:
+
+- `create mode`: chưa có rules file
+- `merge mode`: có rules file và người dùng muốn bổ sung/chỉnh rules
+- `enforcement mode`: chạy như pre-hook, nạp rules hiện có và ép phase kế tiếp tuân thủ
+
+Ví dụ:
+
+```text
+/specify.rules Tất cả tasks phải nhóm theo user story, mọi endpoint mới phải có validation, auth và audit log, implement không được thêm dependency mới nếu chưa có lý do rõ ràng.
+```
+
+### `/specify.tester`
+
+Phân tích spec và tạo/cập nhật `.specify/test-plan.md` theo format bảng OneShop. Prompt này đã được tối ưu để AI nghĩ như tester senior:
+
+- happy path, alternate path, negative path
+- boundary, empty/null, permission, state transition
+- integration, regression, security-minded coverage
+- recompute summary từ nội dung thực tế trong file
+
+Ví dụ:
+
+```text
+/specify.tester specs/001-example/spec.md
+```
+
+## Project Structure
+
+```text
+ArcticFactory.Extension/
+├── extension.yml
+├── commands/
+│   ├── skills-check.md
+│   ├── rules.md
+│   └── tester.md
+├── templates/
+│   └── rules-template.md
+├── README.md
+├── CHANGELOG.md
+└── LICENSE
+```
+
+## Upstream Notes
+
+Từ tài liệu upstream `spec-kit`, extension system hiện hỗ trợ:
+
+- `extension.yml`
+- command markdown files
+- optional config templates
+- lifecycle hooks như `before_plan`, `before_tasks`, `before_implement`
+
+Nguồn tham khảo:
+
+- Spec Kit repository: https://github.com/github/spec-kit
+- Extension API reference: https://raw.githubusercontent.com/github/spec-kit/main/extensions/EXTENSION-API-REFERENCE.md
+
+Tài liệu API này mô tả manifest schema, command file format, hook events, và catalog/install flow. Nếu cần tương thích chặt hoàn toàn với schema upstream mới nhất, có thể cần đổi namespace command sang pattern `speckit.{extension-id}.{command}` trong một đợt refactor riêng.
+
+## Requirements
 
 - [spec-kit](https://github.com/github/spec-kit) `>= 0.1.0`
